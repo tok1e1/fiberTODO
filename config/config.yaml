@@ -1,0 +1,9 @@
+server:
+  host: "localhost"
+  port: 8080
+
+database:
+  user: "admin"
+  password: "secret"
+  name: "mydb"
+  type: "postgres"
