@@ -14,39 +14,33 @@ import (
 )
 
 func main() {
-
 	cfg := config.MustLoad()
 
-	//Реализация БД
+	databaseURL := cfg.GetDatabaseURL()
+
 	var db database.DB
-
-	dbType := cfg.Database.Type
-	if dbType == "" {
-		log.Fatal("DB_TYPE is not set in the config. Please specify the database type.")
-	}
-
-	switch dbType {
+	switch cfg.Database.Type {
 	case "postgres":
 		db = &database.Postgres{}
 	default:
-		log.Fatalf("Unsupported database type: %s.", dbType)
+		log.Fatalf("Unsupported database type: %s.", cfg.Database.Type)
 	}
 
-	db.InitDB()
+	if err := db.InitDB(databaseURL); err != nil {
+		log.Fatalf("Database initialization failed: %v", err)
+	}
 	defer db.CloseDB()
 
-	//Реализация обработки на стороне сервера
 	app := fiber.New(fiber.Config{
-		Prefork: true, // используем предварительное форкование для увеличения производительности
+		Prefork: true,
 	})
 
-	app.Use(logger.New())   // Логирование запросов
-	app.Use(compress.New()) // Сжатие ответов
-	app.Use(recover.New())  // Восстановление после паники
-	app.Use(limiter.New())  // Лимит запросов для предотвращения DDOS атак
+	app.Use(logger.New())
+	app.Use(compress.New())
+	app.Use(recover.New())
+	app.Use(limiter.New())
 
-	// Регистрация маршрутов
-	routes.RegisterProductRoutes(app)
+	routes.RegisterProductRoutes(app, db)
 
 	host := cfg.Server.Host
 	port := strconv.Itoa(cfg.Server.Port)

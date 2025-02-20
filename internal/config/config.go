@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/ilyakaznacheev/cleanenv"
 	"log"
 	"os"
@@ -15,12 +16,25 @@ type DatabaseConfig struct {
 	User     string `yaml:"user" env-required:"true"`
 	Password string `yaml:"password" env-required:"true" env:"DB_PASSWORD"`
 	Name     string `yaml:"name" env-required:"true"`
+	Host     string `yaml:"host" env-default:"localhost"`
+	Port     int    `yaml:"port" env-default:"5432"`
 	Type     string `yaml:"type" env-default:"postgres"`
 }
 
 type Config struct {
 	Server   ServerConfig   `yaml:"server"`
 	Database DatabaseConfig `yaml:"database"`
+}
+
+// Формируем строку подключения для PostgreSQL
+func (cfg *Config) GetDatabaseURL() string {
+	return fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		cfg.Database.User,
+		cfg.Database.Password,
+		cfg.Database.Host,
+		cfg.Database.Port,
+		cfg.Database.Name,
+	)
 }
 
 func MustLoad() *Config {
