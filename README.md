@@ -14,7 +14,7 @@
     - [Локально](#локально)
 4. [API Endpoints](#api-endpoints)
 5. [Тестирование](#тестирование)
-6. [Лицензия](#лицензия)
+6. [Скриншоты](#скриншоты)
 
 ---
 
@@ -240,3 +240,20 @@ go run ./cmd/todo/main.go
 ---
 
 ## Скриншоты
+
+![image](https://github.com/user-attachments/assets/1af8e2f7-ec2c-4e9c-913c-92aba173069a)
+
+![image](https://github.com/user-attachments/assets/225232dc-0cef-4bfc-b5c6-23e89560379f)
+
+![image](https://github.com/user-attachments/assets/3adc1047-c2d8-4243-bc40-bdfebcd6868c)
+
+![image](https://github.com/user-attachments/assets/6399d2aa-52aa-4892-aca6-9fa12b99e8cf)
+
+![image](https://github.com/user-attachments/assets/6b2b63cb-c581-4ecf-a55d-f5c86ea89327)
+
+
+
+
+
+
+
